@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="1.0"
+    xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx"
+    xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+    xmlns:sap="http://www.sap.com/Protocols/SAPData">
+    <edmx:DataServices m:DataServiceVersion="2.0">
+        <Schema Namespace="ZWM_CC_INV_DOC_CONF_SRV" xml:lang="en" sap:schema-version="1"
+            xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+            <EntityType Name="Warehouse" sap:label="Warehouse" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="WarehouseNumber"/>
+                </Key>
+                <Property Name="WarehouseNumber" Type="Edm.String" Nullable="false" MaxLength="3" sap:label="Warehouse No." sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="WarehouseDesc" Type="Edm.String" Nullable="false" MaxLength="25" sap:label="Whse no.descr." sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+            </EntityType>
+            <EntityType Name="InventoryDocHeader" sap:label="Inventory Doc. Header" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="WarehouseNumber"/>
+                    <PropertyRef Name="InventoryDocNumber"/>
+                </Key>
+                <Property Name="WarehouseNumber" Type="Edm.String" Nullable="false" MaxLength="3" sap:label="Warehouse No." sap:creatable="false" sap:updatable="false" sap:sortable="false"/>
+                <Property Name="InventoryDocNumber" Type="Edm.String" Nullable="false" MaxLength="10" sap:label="Inventory record" sap:creatable="false" sap:updatable="false" sap:sortable="false"/>
+                <Property Name="RecountVersion" Type="Edm.String" Nullable="false" MaxLength="2" sap:label="Recount version" sap:creatable="false" sap:updatable="false" sap:sortable="false"/>
+                <Property Name="StorageType" Type="Edm.String" Nullable="false" MaxLength="3" sap:label="Storage Type" sap:creatable="false" sap:updatable="false" sap:sortable="false"/>
+                <Property Name="CountDate" Type="Edm.DateTime" Nullable="false" Precision="7" sap:label="Count date" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="InventoryReference" Type="Edm.String" Nullable="false" MaxLength="10" sap:label="Inventory reference number" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="InventoryActive" Type="Edm.Boolean" Nullable="false" sap:label="Inventory active" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="NameOfCounter" Type="Edm.String" Nullable="false" MaxLength="12" sap:label="Name of counter" sap:creatable="false" sap:updatable="false" sap:sortable="false"/>
+                <Property Name="QuantInventory" Type="Edm.Boolean" Nullable="false" sap:label="Quant inventory" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="DifferenceAllowed" Type="Edm.Decimal" Nullable="false" Precision="3" Scale="0" sap:label="Deviation between book inventory and counted inventory" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <NavigationProperty Name="InventoryDocItemSet" Relationship="ZWM_CC_INV_DOC_CONF_SRV.InventoryDocHeaderToInventoryDocItem" FromRole="FromRole_InventoryDocHeaderToInventoryDocItem" ToRole="ToRole_InventoryDocHeaderToInventoryDocItem"/>
+            </EntityType>
+            <EntityType Name="InventoryDocItem" sap:label="Inventory Doc. Item" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="WarehouseNumber"/>
+                    <PropertyRef Name="InventoryDocNumber"/>
+                    <PropertyRef Name="InventoryItem"/>
+                    <PropertyRef Name="QuantNumber"/>
+                    <PropertyRef Name="RecountNo"/>
+                </Key>
+                <Property Name="WarehouseNumber" Type="Edm.String" Nullable="false" MaxLength="3" sap:label="Warehouse No." sap:creatable="false" sap:updatable="false" sap:sortable="false"/>
+                <Property Name="InventoryDocNumber" Type="Edm.String" Nullable="false" MaxLength="10" sap:label="Inventory record" sap:creatable="false" sap:updatable="false" sap:sortable="false"/>
+                <Property Name="InventoryItem" Type="Edm.String" Nullable="false" MaxLength="4" sap:label="Inventory item" sap:creatable="false" sap:updatable="false" sap:sortable="false"/>
+                <Property Name="StorageType" Type="Edm.String" Nullable="false" MaxLength="3" sap:label="Storage Type" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="StorageBin" Type="Edm.String" Nullable="false" MaxLength="10" sap:label="Storage Bin" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="BinPosition" Type="Edm.String" Nullable="false" MaxLength="2" sap:label="Bin position" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Material" Type="Edm.String" Nullable="false" MaxLength="18" sap:label="Material" sap:creatable="false" sap:updatable="false" sap:sortable="false"/>
+                <Property Name="Plant" Type="Edm.String" Nullable="false" MaxLength="4" sap:label="Plant" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Batch" Type="Edm.String" Nullable="false" MaxLength="10" sap:label="Batch" sap:creatable="false" sap:updatable="false" sap:sortable="false"/>
+                <Property Name="SpecialStockInd" Type="Edm.String" Nullable="false" MaxLength="1" sap:label="Special Stock Indicator" sap:creatable="false" sap:updatable="false" sap:sortable="false"/>
+                <Property Name="SpecialStockNumber" Type="Edm.String" Nullable="false" MaxLength="24" sap:label="Special Stock Number" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="StockCategory" Type="Edm.String" Nullable="false" MaxLength="1" sap:label="Stock Category" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="GRDate" Type="Edm.String" Nullable="false" MaxLength="8" sap:label="Date of goods receipt" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="StorageUnit" Type="Edm.String" Nullable="false" MaxLength="20" sap:label="Storage Unit" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="QuantityCounted" Type="Edm.String" Nullable="false" MaxLength="15" sap:label="Quantity for counting result entry" sap:creatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="UnitOfMeasure" Type="Edm.String" Nullable="false" MaxLength="3" sap:label="Unit of measure" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="QuantNumber" Type="Edm.String" Nullable="false" MaxLength="10" sap:label="Quant number" sap:creatable="false" sap:updatable="false" sap:sortable="false"/>
+                <Property Name="RecountNo" Type="Edm.String" Nullable="false" MaxLength="2" sap:label="Recount no." sap:creatable="false" sap:updatable="false" sap:sortable="false"/>
+                <Property Name="RecountVersion" Type="Edm.String" Nullable="false" MaxLength="2" sap:label="Recount version" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ItemStatus" Type="Edm.String" Nullable="false" MaxLength="1" sap:label="Item status of inventory at quant level" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="CountDate" Type="Edm.String" Nullable="false" MaxLength="8" sap:label="Count date" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="InventoryMethod" Type="Edm.String" Nullable="false" MaxLength="2" sap:label="Inventory method" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="InventoryReference" Type="Edm.String" Nullable="false" MaxLength="10" sap:label="Inventory reference number" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="MaterialDesc" Type="Edm.String" Nullable="false" MaxLength="40" sap:label="Material Description" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="InventoryPage" Type="Edm.String" Nullable="false" MaxLength="4" sap:label="Inventory page" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="StorageUnitType" Type="Edm.String" Nullable="false" MaxLength="3" sap:label="Storage Unit Type" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ZeroStock" Type="Edm.String" Nullable="false" MaxLength="1" sap:label="Zero stock" sap:creatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="SLED_BBD" Type="Edm.String" Nullable="false" MaxLength="8" sap:label="Expiration Date or Best-Before Date" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="StorageLocation" Type="Edm.String" Nullable="false" MaxLength="4" sap:label="Storage Location" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Uname" Type="Edm.String" Nullable="false" MaxLength="25" sap:label="UNAME" sap:creatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="QuantityExpected" Type="Edm.String" Nullable="false" MaxLength="15" sap:label="Target cumulative quantity" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <NavigationProperty Name="InventoryDocHeaderSet" Relationship="ZWM_CC_INV_DOC_CONF_SRV.InventoryDocHeaderToInventoryDocItem" FromRole="ToRole_InventoryDocHeaderToInventoryDocItem" ToRole="FromRole_InventoryDocHeaderToInventoryDocItem"/>
+            </EntityType>
+            <EntityType Name="Summary" sap:label="Summary Info" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="summaryKey"/>
+                </Key>
+                <Property Name="summaryKey" Type="Edm.String" Nullable="false" MaxLength="20" sap:label="Summary Key (ID)" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="icon" Type="Edm.String" Nullable="false" MaxLength="50" sap:label="name of icon (sap-icon://...)" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="title" Type="Edm.String" Nullable="false" MaxLength="80" sap:label="Title text" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="subtitle" Type="Edm.String" Nullable="false" MaxLength="80" sap:label="Subtitle text" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="info" Type="Edm.String" Nullable="false" MaxLength="80" sap:label="Info text" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="infoState" Type="Edm.String" Nullable="false" MaxLength="20" sap:label="State of Info (Critical/Positive)" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="number" Type="Edm.String" Nullable="false" MaxLength="10" sap:label="Number value" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="numberDigits" Type="Edm.String" Nullable="false" MaxLength="1" sap:label="Number of digits" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="numberUnit" Type="Edm.String" Nullable="false" MaxLength="10" sap:label="Number Unit of Measure" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="numberState" Type="Edm.String" Nullable="false" MaxLength="10" sap:label="State of Number (Positive/Negative)" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="stateArrow" Type="Edm.String" Nullable="false" MaxLength="10" sap:label="State Arrow (Up/Down)" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+            </EntityType>
+            <Association Name="InventoryDocHeaderToInventoryDocItem" sap:content-version="1">
+                <End Type="ZWM_CC_INV_DOC_CONF_SRV.InventoryDocHeader" Multiplicity="*" Role="FromRole_InventoryDocHeaderToInventoryDocItem"/>
+                <End Type="ZWM_CC_INV_DOC_CONF_SRV.InventoryDocItem" Multiplicity="*" Role="ToRole_InventoryDocHeaderToInventoryDocItem"/>
+                <ReferentialConstraint>
+                    <Principal Role="FromRole_InventoryDocHeaderToInventoryDocItem">
+                        <PropertyRef Name="InventoryDocNumber"/>
+                        <PropertyRef Name="WarehouseNumber"/>
+                    </Principal>
+                    <Dependent Role="ToRole_InventoryDocHeaderToInventoryDocItem">
+                        <PropertyRef Name="InventoryDocNumber"/>
+                        <PropertyRef Name="WarehouseNumber"/>
+                    </Dependent>
+                </ReferentialConstraint>
+            </Association>
+            <EntityContainer Name="ZWM_CC_INV_DOC_CONF_SRV_Entities" m:IsDefaultEntityContainer="true" sap:supported-formats="atom json xlsx">
+                <EntitySet Name="WarehouseSet" EntityType="ZWM_CC_INV_DOC_CONF_SRV.Warehouse" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
+                <EntitySet Name="InventoryDocHeaderSet" EntityType="ZWM_CC_INV_DOC_CONF_SRV.InventoryDocHeader" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:searchable="true" sap:pageable="false" sap:content-version="1"/>
+                <EntitySet Name="InventoryDocItemSet" EntityType="ZWM_CC_INV_DOC_CONF_SRV.InventoryDocItem" sap:creatable="false" sap:deletable="false" sap:searchable="true" sap:pageable="false" sap:content-version="1"/>
+                <EntitySet Name="SummaryCollection" EntityType="ZWM_CC_INV_DOC_CONF_SRV.Summary" sap:content-version="1"/>
+                <AssociationSet Name="InventoryDocHeaderToInventoryDocItemSet" Association="ZWM_CC_INV_DOC_CONF_SRV.InventoryDocHeaderToInventoryDocItem" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="InventoryDocHeaderSet" Role="FromRole_InventoryDocHeaderToInventoryDocItem"/>
+                    <End EntitySet="InventoryDocItemSet" Role="ToRole_InventoryDocHeaderToInventoryDocItem"/>
+                </AssociationSet>
+                <FunctionImport Name="getSummary" ReturnType="ZWM_CC_INV_DOC_CONF_SRV.Summary" EntitySet="SummaryCollection" m:HttpMethod="GET" sap:label="Numer of open Inventory Documents">
+                    <Parameter Name="Key" Type="Edm.String" Mode="In" MaxLength="20"/>
+                </FunctionImport>
+            </EntityContainer>
+            <atom:link rel="self" href="https://webidetesting9011552-dacaf8d5e.dispatcher.us2.hana.ondemand.com/sap/opu/odata/sap/ZWM_CC_INV_DOC_CONF_SRV/$metadata"
+                xmlns:atom="http://www.w3.org/2005/Atom"/>
+                <atom:link rel="latest-version" href="https://webidetesting9011552-dacaf8d5e.dispatcher.us2.hana.ondemand.com/sap/opu/odata/sap/ZWM_CC_INV_DOC_CONF_SRV/$metadata"
+                    xmlns:atom="http://www.w3.org/2005/Atom"/>
+                </Schema>
+            </edmx:DataServices>
+        </edmx:Edmx>

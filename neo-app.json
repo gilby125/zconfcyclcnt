@@ -1,0 +1,71 @@
+{
+	"routes": [{
+		"path": "/webapp/resources/zlibrary",
+		"target": {
+			"type": "application",
+			"name": "zlibrary",
+			"entryPath": "/"
+		},
+		"description": "Woodward custom control library"
+	},{
+		"path": "/resources/zlibrary",
+		"target": {
+			"type": "application",
+			"name": "zlibrary",
+			"entryPath": "/"
+		},
+		"description": "Woodward custom control library"
+	}, {
+		"path": "/webapp/resources",
+		"target": {
+			"type": "service",
+			"name": "sapui5",
+			"entryPath": "/resources",
+			"version": "1.38.11"
+		},
+		"description": "SAPUI5 Resources"
+	}, {
+		"path": "/webapp/test-resources",
+		"target": {
+			"type": "service",
+			"name": "sapui5",
+			"entryPath": "/test-resources",
+			"version": "1.38.11"
+		},
+		"description": "SAPUI5 Test Resources"
+	}, {
+		"path": "/resources",
+		"target": {
+			"type": "service",
+			"name": "sapui5",
+			"entryPath": "/resources",
+			"version": "1.38.11"
+		},
+		"description": "SAPUI5 Resources"
+	}, {
+		"path": "/test-resources",
+		"target": {
+			"type": "service",
+			"name": "sapui5",
+			"entryPath": "/test-resources",
+			"version": "1.38.11"
+		},
+		"description": "SAPUI5 Test Resources"
+	}, {
+		"path": "/sap/bc/ui5_ui5",
+		"target": {
+			"type": "destination",
+			"name": "NWD",
+			"entryPath": "/sap/bc/ui5_ui5"
+		},
+		"description": "Woodward SAPUI5 Resources (NWD)"
+	}, {
+		"path": "/sap/opu/odata",
+		"target": {
+			"type": "destination",
+			"name": "NWD",
+			"entryPath": "/sap/opu/odata"
+		},
+		"description": "Woodward Development Front End Server"
+	}]
+}

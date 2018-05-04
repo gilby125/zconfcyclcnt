@@ -1,0 +1,12 @@
+/** App Specific Styles **/
+
+/* Detail list view to add padding around the content */
+.detailListItem {
+	margin: 2px !important;
+}
+.detailListItemVBox {
+	margin: .25rem !important;
+}
+.detailListItemDiffDialogTitle {
+	font-weight: bold;
+}

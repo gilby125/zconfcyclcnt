@@ -1,0 +1,204 @@
+<mvc:View controllerName="com.woodward.zconfcyclcnt.controller.Detail"
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:semantic="sap.m.semantic"
+	xmlns:footerbar="sap.ushell.ui.footerbar" >
+
+	<semantic:DetailPage id="detailPage"
+		navButtonPress="onNavBack"
+		showNavButton="{device>/system/phone}"
+		title="{i18n>detailPageTitle} {
+			path: 'InventoryDocNumber',
+			formatter: '.formatter.removeLeadingZeros'
+		}"
+		busy="{detailView>/busy}"
+		busyIndicatorDelay="{detailView>/delay}" >
+
+		<semantic:content>
+			<Panel id="detailPanel"
+				expandable="true"
+				headerText="{i18n>detailHeaderTitle} {StorageType}"
+				expand="onDetailPanelExpand" >
+				<ObjectHeader id="objectHeader"
+					title="{= ${InventoryReference} !== '' ? ${i18n>detailHeaderIntro} + ${InventoryReference} : ''}" >
+					<attributes>
+						<ObjectAttribute
+							title="{i18n>detailHeaderAttrCountDate}"
+							text = "{
+								path: 'CountDate',
+								formatter: '.formatter.formatDateMMDDYY'
+							}" />
+						<ObjectAttribute
+							title="{i18n>detailHeaderAttrCountedBy}"
+							text = "{= ${NameOfCounter} !== '' ? ${NameOfCounter} : ${i18n>detailHeaderAttrNoCounter}}" />
+						<ObjectAttribute
+							visible="{= ${RecountVersion} === '00' ? false : true}"
+							title="{i18n>detailHeaderAttrRecount}"
+							text = "{RecountVersion}" />
+					</attributes>
+					<!--
+					<statuses>
+						<ObjectStatus
+							title=""
+							text="{= ${InventoryActive} ? ${i18n>detailHeaderStatActive} : ${i18n>detailHeaderStatInactive} }"
+							state="{= ${InventoryActive} ? 'Success' : 'Error' }"
+							icon="" />
+						<ObjectStatus
+							title=""
+							text="{= ${QuantInventory} ? ${i18n>detailHeaderStatIsQuant} : ${i18n>detailHeaderStatNotQuant} }"
+							state="{= ${QuantInventory} ? 'Success' : 'Warning' }"
+							icon="" />
+					</statuses>
+					-->
+				</ObjectHeader>
+			</Panel>
+
+
+			<Bar id="detailToolBar"
+				design="Header" >
+				<contentLeft>
+					<Button
+						icon="sap-icon://back-to-top"
+						tooltip="i18n>detailListTopTooltip"
+						press="onGoToTop" />
+				</contentLeft>
+				<contentMiddle>
+					<SearchField id="detailSearchField"
+						showRefreshButton="{= !${device>/support/touch} }"
+						placeholder="{i18n>detailSearchPlaceholder}"
+						tooltip="{i18n>detailSearchTooltip}"
+						width="100%"
+						search="onSearch" />
+				</contentMiddle>
+				<contentRight>
+					<Button
+						visible="{appState>/hasCameraScanner}"
+						icon="sap-icon://bar-code"
+						tooltip="{i18n>appActivateBarcodeToolTip}"
+						press="onCameraScannerBtn" />
+				</contentRight>
+			</Bar>
+
+			<ScrollContainer id="detailListScroller"
+				vertical="true" >
+				<PullToRefresh id="detailPullToRefresh"
+					visible="{device>/support/touch}"
+					refresh="onRefresh" />
+
+				<List id="detailList"
+					busyIndicatorDelay="{detailView>/lineItemTableDelay}"
+					noDataText="{i18n>detailLineItemTableNoDataText}"
+					mode="SingleSelectMaster"
+					inset="false"
+					includeItemInSelection="false"
+					updateFinished="onListUpdateFinished"
+					selectionChange="onItemPress"
+					items="{
+						path: 'InventoryDocItemSet',
+						parameters: {
+							operationMode: 'Client'
+						},
+						sorter: [{
+							path: 'InventoryDocNumber',
+							descending: false,
+							group: false
+						}, {
+							path: 'InventoryItem',
+							descending: false,
+							group: false
+						}]
+					}" >
+					<items>
+						<CustomListItem
+							class="detailListItem"
+							busyIndicatorDelay="0" >
+							<customData>
+								<core:CustomData
+									key="InventoryDocument"
+									value="
+										'WarehouseNumber':'{WarehouseNumber}',
+										'InventoryDocNumber':'{InventoryDocNumber}',
+										'InventoryItem':'{InventoryItem}',
+										'QuantNumber':'{QuantNumber}',
+										'RecountNo':'{RecountNo}'
+									"
+									writeToDom="true" />
+							</customData>
+							<content>
+								<VBox class="detailListItemVBox" >
+									<FlexBox
+										justifyContent="Start"
+										alignItems="Start"
+										wrap="Wrap" >
+										<items>
+											<VBox>
+												<layoutData>
+													<FlexItemData alignSelf="Start" />
+													<FlexItemData growFactor="1" />
+												</layoutData>
+												<Text
+													text="Material: {Material} / Batch: {
+														path: 'Batch',
+														formatter: '.formatter.removeLeadingZeros'
+													}" />
+												<Text
+													text="{MaterialDesc}" />
+											</VBox>
+										</items>
+									</FlexBox>
+									<FlexBox
+										justifyContent="SpaceBetween"
+										alignItems="Center"
+										wrap="Wrap" >
+										<items>
+											<VBox>
+												<layoutData>
+													<FlexItemData alignSelf="Start" />
+													<FlexItemData growFactor="4" />
+												</layoutData>
+												<Label
+													text="Bin: {StorageBin}" />
+											</VBox>
+											<HBox>
+												<layoutData>
+													<FlexItemData alignSelf="End" />
+													<FlexItemData growFactor="2" />
+												</layoutData>
+												<Label
+													visible="{= ${QuantNumber} === '' ? false : true }"
+													text="Quant: {QuantNumber}" />
+											</HBox>
+										</items>
+									</FlexBox>
+								</VBox>
+							</content>
+						</CustomListItem>
+					</items>
+				</List>
+			</ScrollContainer>
+
+		</semantic:content>
+
+		<semantic:sendEmailAction>
+			<semantic:SendEmailAction
+				id="shareEmail"
+				press="onShareEmailPress"/>
+		</semantic:sendEmailAction>
+
+		<semantic:shareInJamAction>
+			<semantic:ShareInJamAction
+				id="shareInJam"
+				visible="{FLP>/isShareInJamActive}"
+				press="onShareInJamPress"/>
+		</semantic:shareInJamAction>
+
+		<semantic:saveAsTileAction>
+			<footerbar:AddBookmarkButton
+				id="shareTile"
+				title="{detailView>/saveAsTileTitle}"/>
+		</semantic:saveAsTileAction>
+
+	</semantic:DetailPage>
+
+</mvc:View>

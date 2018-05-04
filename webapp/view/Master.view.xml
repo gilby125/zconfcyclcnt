@@ -1,0 +1,156 @@
+<mvc:View controllerName="com.woodward.zconfcyclcnt.controller.Master"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:core="sap.ui.core"
+	xmlns="sap.m"
+	xmlns:semantic="sap.m.semantic" >
+
+	<semantic:MasterPage id="page"
+		title="{masterView>/title}"
+		navButtonPress="onNavBack"
+		showNavButton="true" >
+
+		<semantic:customHeaderContent>
+			<Button id="changeWarehouse"
+				icon="sap-icon://factory"
+				tooltip="{i18n>masterChangeWhseTooltip}"
+				press="onChangeWarehouse" />
+		</semantic:customHeaderContent>
+
+		<semantic:subHeader>
+			<Bar>
+				<contentLeft>
+					<Button id="topOfListBtn"
+						icon="sap-icon://back-to-top"
+						tooltip="Jump to the top of the list"
+						press="onGoToTop" />
+				</contentLeft>
+				<contentMiddle>
+					<SearchField id="masterListSearchField"
+						showRefreshButton="{= !${device>/support/touch} }"
+						placeholder="{i18n>masterSearchPlaceholder}"
+						tooltip="{i18n>masterSearchTooltip}"
+						width="100%"
+						search="onSearch" />
+				</contentMiddle>
+				<contentRight>
+					<Button id="cameraScannerBtn"
+						visible="{appState>/hasCameraScanner}"
+						icon="sap-icon://bar-code"
+						tooltip="{i18n>appActivateBarcodeToolTip}"
+						press="onCameraScannerBtn" />
+				</contentRight>
+			</Bar>
+		</semantic:subHeader>
+
+		<semantic:content>
+			<PullToRefresh id="pullToRefresh"
+				visible="{device>/support/touch}"
+				refresh="onRefresh" />
+			<!-- For client side filtering add this to the items attribute:  parameters: {operationMode: 'Client'}}" -->
+			<List id="masterList"
+				items="{
+					path: 'masterView>/InventoryDocHeaderSet',
+					sorter: {
+						path: 'InventoryDocNumber',
+						descending: false
+						},
+					groupHeaderFactory: '.createGroupHeader'
+				}"
+				busyIndicatorDelay="{masterView>/delay}"
+				noDataText="{masterView>/noDataText}"
+				mode="{= ${device>/system/phone} ? 'None' : 'SingleSelectMaster'}"
+				growing="true"
+				growingScrollToLoad="true"
+				updateFinished="onUpdateFinished"
+				selectionChange="onSelectionChange" >
+				<infoToolbar>
+					<Toolbar
+						active="true"
+						id="filterBar"
+						visible="{masterView>/isFilterBarVisible}"
+						press="onOpenViewSettings" >
+						<Title
+							id="filterBarLabel"
+							text="{masterView>/filterBarLabel}" />
+					</Toolbar>
+				</infoToolbar>
+				<items>
+					<ObjectListItem
+						type="{= ${device>/system/phone} ? 'Active' : 'Inactive'}"
+						press="onSelectionChange"
+						title="Inventory Document {masterView>InventoryDocNumber}" >
+						<firstStatus>
+							<ObjectStatus
+								title="{i18n>masterListAttrCountDate}"
+								text="{
+									path: 'masterView>CountDate',
+									formatter: '.formatter.formatDateMMDDYY'
+								}" />
+						</firstStatus>
+						<secondStatus>
+							<ObjectStatus
+								title="{i18n>masterListAttrCounter}"
+								text="{= ${masterView>NameOfCounter} !== '' ? ${masterView>NameOfCounter} : ${i18n>masterListAttrCounterUnknown}}" />
+						</secondStatus>
+						<attributes>
+							<ObjectAttribute
+								title="{i18n>masterListAttrStorageType}"
+								text="{masterView>StorageType}" />
+							<ObjectAttribute
+								visible="{= parseInt(${RecountVersion}) > 0 ? true : false}"
+								title="{i18n>masterListAttrRecountVersion}"
+								text="{masterView>RecountVersion}" />
+						</attributes>
+					</ObjectListItem>
+				</items>
+			</List>
+		</semantic:content>
+
+		<semantic:sort>
+			<semantic:SortSelect id="sort"
+				selectedKey="{masterView>/sortBy}"
+				change="onSort" >
+				<core:Item
+					key="InventoryDocNumber"
+					text="{i18n>masterSort} {i18n>masterSort1}" />
+				<core:Item
+					key="StorageType"
+					text="{i18n>masterSort} {i18n>masterSort2}" />
+				<core:Item
+					key="CountDate"
+					text="{i18n>masterSort} {i18n>masterSort3}" />
+				<core:Item
+					key="NameOfCounter"
+					text="{i18n>masterSort} {i18n>masterSort4}" />
+			</semantic:SortSelect>
+		</semantic:sort>
+
+<!--
+		<semantic:filter>
+			<semantic:FilterAction id="filter"
+				press="onOpenViewSettings" />
+		</semantic:filter>
+-->
+
+		<semantic:group>
+			<semantic:GroupSelect id="group"
+				selectedKey="{masterView>/groupBy}"
+				change="onGroup" >
+				<core:Item
+					key="None"
+					text="{i18n>masterGroupNone}" />
+				<core:Item
+					key="StorageType"
+					text="{i18n>masterGroup} {i18n>masterGroup1}" />
+				<core:Item
+					key="CountDate"
+					text="{i18n>masterGroup} {i18n>masterGroup2}" />
+				<core:Item
+					key="NameOfCounter"
+					text="{i18n>masterGroup} {i18n>masterGroup3}" />
+			</semantic:GroupSelect>
+		</semantic:group>
+
+	</semantic:MasterPage>
+
+</mvc:View>
